@@ -3,21 +3,32 @@ const Celebrity = require("../models/Celebrity.model");
 
 
 // Adding New Celebrity -------*****-------*****-------*****-------*****-------*****-------*****
-router.get('/celebrities/create', (req, res) => {
+router.get('/create', (req, res) => {
   res.render('celebrities/new-celebrity')
 });
 
-router.post('/celebrities/create', (req, res) => {
+router.post('/create', (req, res) => {
   Celebrity.create({
   name: req.body.theName,
   occupation: req.body.theOccupation,
   catchPhrase: req.body.theCatchphrase
   })
   .then((response) => {
-    res.redirect('/all-celebrities');
+    res.redirect('/celebrities/all-celebrities');
   })
   .catch((err) => {
-    res.render('celebrities/new-celebrity');
+    console.log(err);
+  })
+})
+
+// Listing Our Celebrities -------*****-------*****-------*****-------*****-------*****-------*****
+router.get('/all-celebrities', (req, res) => {
+  Celebrity.find()
+  .then((allCelebrities) => {
+    res.render('celebrities/celebrities', {celebrities: allCelebrities})
+  })
+  .catch((err) => {
+    console.log(err);
   })
 })
 
@@ -31,10 +42,9 @@ router.post('/celebrities/create', (req, res) => {
 
 
 
+// http://localhost:3000/all-celebrities
 
-
-
-
+http://localhost:3000/celebrities/celebrities/all-celebrities
 
 
 
