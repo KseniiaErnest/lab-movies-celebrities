@@ -4,7 +4,7 @@ const Movie = require('../models/Movie.model');
 
 // All movies page -----------------------**********************-------------------------*************************-
 router.get('/all-movies', (req, res) => {
-  Movie.find().populate('cast')
+  Movie.find()
   .then((allMovies) => {
     res.render('movies/movies', {movies: allMovies});
   })
@@ -41,6 +41,19 @@ router.post('/create', (req, res) => {
   })
 })
 
+
+// The Movie Details Page----------********************---------------------*********------
+
+router.get('/:id', (req, res) => {
+  Movie.find().populate('cast')
+  .then((allMovies) => {
+    res.render('movies/movies', {movies: allMovies});
+  })
+  .catch((err) => {
+    console.log(err);
+  })
+ 
+})
 
 
 
