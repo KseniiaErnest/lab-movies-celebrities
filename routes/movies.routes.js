@@ -45,14 +45,14 @@ router.post('/create', (req, res) => {
 // The Movie Details Page----------********************---------------------*********------
 
 router.get('/:id', (req, res) => {
-  Movie.find().populate('cast')
-  .then((allMovies) => {
-    res.render('movies/movies', {movies: allMovies});
+  const ID = req.params.id;
+  Movie.findById(ID).populate('cast')
+  .then((movieDetails) => {
+    res.render('movies/movie-details', {movieDetails: movieDetails})
   })
   .catch((err) => {
     console.log(err);
   })
- 
 })
 
 
