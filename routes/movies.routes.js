@@ -55,6 +55,16 @@ router.get('/:id', (req, res) => {
   })
 })
 
+// Deleting Movies -------******------******-------***********-------------********-----
+
+router.post('/:theID/delete', (req, res) => {
+  Movie.findByIdAndRemove(req.params.theID)
+  .then(() => {
+    res.redirect('/movies/all-movies')
+  })
+})
+
+
 
 
 
