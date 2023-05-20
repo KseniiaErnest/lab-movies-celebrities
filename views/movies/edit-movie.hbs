@@ -1,0 +1,48 @@
+<h2>Edit this Movie</h2>
+
+<form action="/movies/{{theMovie._id}}/update" method="POST">
+
+<label>Title:</label>
+  <input type="text" name="theTitle" value="{{theMovie.title}}">
+
+  <label>Genre:</label>
+  <input type="text" name="theGenre" value="{{theMovie.genre}}">
+
+   <label>Plot:</label>
+  <input type="text" name="thePlot" value="{{theMovie.plot}}">
+
+<div>
+  <label>Cast:</label>
+  </div>
+
+  <div>
+
+  <select name="theCelebrity" multiple>
+{{#each celebrities}}
+{{#if this.flag}}
+<option value="{{this._id}}" selected>{{this.name}}</option>
+{{else}}
+<option value="{{this._id}}">{{this.name}}</option>
+{{/if}}
+{{/each}}
+  </select>
+
+  </div>
+
+<div>
+
+  <select name="theCelebrity" multiple>
+{{#each celebrities}}
+{{#if this.flag}}
+<option value="{{this._id}}" selected>{{this.name}}</option>
+{{else}}
+<option value="{{this._id}}">{{this.name}}</option>
+{{/if}}
+{{/each}}
+  </select>
+
+  </div>
+
+  <button>Save</button>
+
+</form>

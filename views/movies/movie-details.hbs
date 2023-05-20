@@ -14,7 +14,11 @@
 </ul>
 {{/each}}
 
+<br><br><br>
+<a href="/movies/{{movieDetails._id}}/edit">Edit this Movie</a>
+<br><br><br>
 
 <form action="/movies/{{movieDetails._id}}/delete" method="POST"> 
   <button>Delete this movie</button>
 </form>
+

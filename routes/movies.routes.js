@@ -62,15 +62,42 @@ router.post('/:theID/delete', (req, res) => {
   .then(() => {
     res.redirect('/movies/all-movies')
   })
+  .catch((err) => {
+    console.log(err);
+  })
 })
 
+// Editing Movies -----------**************---------------**********---------*******
+router.get('/:id/edit', (req, res) => {
+  Movie.findById(req.params.id)
+  .then((theMovie) => {
+    Celebrity.find().then((allCelebrities) => {
 
+      allCelebrities.forEach((theCelebrity) => {
+        if ((theCelebrity._id).equals(theMovie.cast)) {
+          theCelebrity.flag = true;
+        }
+      })
+      res.render('movies/edit-movie', {theMovie: theMovie, celebrities: allCelebrities})
+    })
+  })
+  .catch((err) => {
+    console.log(err);
+  })
+ 
+});
 
-
-
-
-
-
+router.post('/:theID/update', (req, res) => {
+  Movie.findByIdAndUpdate(req.params.theID, {
+  title: req.body.theTitle,
+  genre: req.body.theGenre,
+  plot: req.body.thePlot,
+  cast: req.body.theCelebrity
+  })
+  .then(() => {
+    res.redirect('/movies/'+req.params.theID)
+  })
+})
 
 
 
