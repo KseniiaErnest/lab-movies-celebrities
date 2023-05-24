@@ -7,6 +7,9 @@ router.use('/celebrities', celebritiesRoutes);
 const moviesRoutes = require('./movies.routes');
 router.use('/movies', moviesRoutes);
 
+const userRoutes = require('./user.routes');
+router.use('/user', userRoutes);
+
 /* GET home page */
 router.get("/", (req, res, next) => {
   res.render("index");

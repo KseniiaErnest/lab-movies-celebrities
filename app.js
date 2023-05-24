@@ -14,6 +14,7 @@ const express = require('express');
 const hbs = require('hbs');
 
 const app = express();
+require('./config/session.config')(app);
 
 // ℹ️ This function is getting exported from the config folder. It runs most middlewares
 require('./config')(app);
@@ -30,5 +31,10 @@ app.use('/', index);
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require('./error-handling')(app);
+
+app.use((req, res, next)=>{
+  res.locals.theUserObject = req.session.currentUser || null;
+  next();
+})
 
 module.exports = app;
