@@ -29,6 +29,38 @@ bcryptjs.genSalt(saltRounds)
 // GET route - login
 router.get('/login', (req, res) => {
   res.render('user/login')
+});
+
+router.post('/login', (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+
+  User.findOne({username: username})
+  .then((gotUser) => {
+    if (!gotUser) {
+      console.log('no user found');
+      res.render('/');
+      return;
+    } else if (bcryptjs.compareSync(password, gotUser.passwordHash)) {
+      /*Save the user in the session */
+      req.session.currentUser = gotUser;
+      res.redirect('/user/userProfile');
+    } else {
+      console.log('sorry password does not match');
+      res.redirect('/');
+    }
+  })
+  .catch(err => console.log(err));
+})
+
+router.get('/userProfile', (req, res) => {
+  res.render('user/user-profile', {userInSession: req.session.currentUser});
+})
+
+// POST route - logout
+router.post('/logout', (req, res, next) => {
+req.session.destroy();
+res.redirect('/');
 })
 
 

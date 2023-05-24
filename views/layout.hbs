@@ -12,13 +12,25 @@
 
   <body>
     <nav>
+      {{#if theUserObject}}
+      <h1>Hey, {{theUserObject.username}}</h1>
+      {{/if}}
+
       <a href="/">Home</a>
       <a href="/celebrities/create">Add Celebrity</a>
       <a href="/celebrities/all-celebrities">All Celebrities</a>
       <a href="/movies/all-movies">All Movies</a>
       <a href="/movies/create">Add Movie</a>
       <a href="/user/signup">Sign Up</a>
+
+      {{#if theUserObject}}
+      <form style="display:inline" action="/user/logout" method="POST"><button>Logout</button></form>
+      {{else}}
+      <a href="/user/login">Login</a>
+      {{/if}}
+
     </nav>
+
     <div class="container">
       {{{body}}}
     </div>
