@@ -8,7 +8,7 @@ const moviesRoutes = require('./movies.routes');
 router.use('/movies', moviesRoutes);
 
 const userRoutes = require('./user.routes');
-router.use('/user', userRoutes);
+router.use('/', userRoutes);
 
 /* GET home page */
 router.get("/", (req, res, next) => {

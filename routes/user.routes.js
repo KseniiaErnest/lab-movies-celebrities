@@ -44,7 +44,8 @@ router.post('/login', (req, res) => {
     } else if (bcryptjs.compareSync(password, gotUser.passwordHash)) {
       /*Save the user in the session */
       req.session.currentUser = gotUser;
-      res.redirect('/user/userProfile');
+      console.log(req.session)
+      res.redirect('/userProfile');
     } else {
       console.log('sorry password does not match');
       res.redirect('/');
