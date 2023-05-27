@@ -26,7 +26,8 @@ const userSchema = new Schema (
   movie: {
     type: [mongoose.Types.ObjectId],
     ref: 'Movie'
-  }
+  },
+  admin: {type: Boolean, default: false}
 },
 {
   timestamps: true

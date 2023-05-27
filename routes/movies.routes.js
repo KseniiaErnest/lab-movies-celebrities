@@ -2,7 +2,9 @@ const router = require("express").Router();
 const Celebrity = require("../models/Celebrity.model");
 const Movie = require('../models/Movie.model');
 const isLoggedIn = require('../middleware/isLoggedIn');
-const User = require('../models/User.model')
+const User = require('../models/User.model');
+// To upload images
+const uploader = require("../config/cloudinary");
 
 // All movies page -----------------------**********************-------------------------*************************-
 router.get('/all-movies', (req, res, next) => {
@@ -28,9 +30,10 @@ router.get('/create', isLoggedIn, (req, res, next) => {
 
 });
 
-router.post('/create', (req, res, next) => {
+router.post('/create', isLoggedIn, uploader.single('img'), (req, res, next) => {
   Movie.create({
     title: req.body.theTitle,
+    image: req.file.path,
     genre: req.body.theGenre,
     plot: req.body.thePlot,
     cast: req.body.theCelebrity
@@ -40,7 +43,7 @@ router.post('/create', (req, res, next) => {
     res.redirect('/movies/all-movies');
   })
   .catch((err) => {
-    console.log(err);
+  next(err);
   })
 })
 
@@ -91,13 +94,19 @@ router.get('/:id/edit', (req, res, next) => {
  
 });
 
-router.post('/:theID/update', (req, res, next) => {
-  Movie.findByIdAndUpdate(req.params.theID, {
+router.post('/:theID/update', uploader.single('img'), (req, res, next) => {
+  let theUpdate = {
   title: req.body.theTitle,
   genre: req.body.theGenre,
   plot: req.body.thePlot,
   cast: req.body.theCelebrity
-  })
+  }
+  if (req.file) {
+    theUpdate.image = req.file.path;
+  }
+  console.log(req.file);
+  
+  Movie.findByIdAndUpdate(req.params.theID, theUpdate)
   .then(() => {
     req.flash('success', 'Movie Successfully Updated');
     res.redirect('/movies/'+req.params.theID);

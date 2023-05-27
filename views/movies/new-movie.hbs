@@ -1,9 +1,13 @@
 <h1>Add a Movie</h1>
-
-<form action="/movies/create" method="POST">
+{{!-- When upload image add to form enctype="multipart/form-data" --}}
+<form action="/movies/create" method="POST" enctype="multipart/form-data">
 
 <label>Title:</label>
   <input type="text" name="theTitle" id="">
+
+  <label>Image:</label>
+  {{!-- If we want to upload an image type="text" ==> type="file" and name becomes name="img" --}}
+  <input type="file" name="img" id="">
 
   <label>Genre:</label>
   <input type="text" name="theGenre" id="">

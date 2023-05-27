@@ -18,6 +18,7 @@
       {{/if}}
 
       <a href="/">Home</a>
+
       {{#if theUserObject}}
       <a href="/celebrities/create">Add Celebrity</a>
       {{/if}}
@@ -35,6 +36,14 @@
       {{else}}
       <a href="/login">Login</a>
       {{/if}}
+
+      {{#if theUserObject}}
+      <a href="/userProfile">User Profile</a>
+      {{/if}}
+
+     {{#if isAdmin}}
+     <a href="/all-users">All Users</a>
+     {{/if}}
 
     </nav>
 

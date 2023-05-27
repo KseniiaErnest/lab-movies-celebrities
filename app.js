@@ -29,6 +29,12 @@ app.locals.title = `${capitalized(projectName)}- Generated with Ironlauncher`;
 
 app.use((req, res, next)=>{
   res.locals.theUserObject = req.session.currentUser || null;
+  //Making admin global
+  let isAdmin = false;
+  if (req.session.currentUser && req.session.currentUser.admin) {
+    isAdmin = true;
+  };
+  res.locals.isAdmin = isAdmin;
   // To make an error globaly avaible
   res.locals.errorMessage = req.flash('error');
   res.locals.successMessage = req.flash("success");

@@ -1,0 +1,13 @@
+<h1>All Users</h1>
+
+{{#each users}}
+<div>
+  <hr>
+  {{this.username}}
+  <form action="/delete-user" method="POST">
+  <input type="hidden" name="theUserID" value="{{this._id}}" >
+  <button>Delete User</button>
+  </form>
+  <hr>
+</div>
+{{/each}}

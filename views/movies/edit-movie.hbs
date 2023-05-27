@@ -1,6 +1,6 @@
 <h2>Edit this Movie</h2>
 
-<form action="/movies/{{theMovie._id}}/update" method="POST">
+<form action="/movies/{{theMovie._id}}/update" method="POST" enctype="multipart/form-data">
 
 <label>Title:</label>
   <input type="text" name="theTitle" value="{{theMovie.title}}">
@@ -43,6 +43,14 @@
 
   </div>
 
+<a href="#" id="uploadNewImg">Click Here to Upload a New Image</a>
+<div id="imgInput">
+  Image:
+  <input type="file" name="img">
+</div>
+
   <button>Save</button>
 
 </form>
+
+<script src="/javascripts/editImage.js"></script>

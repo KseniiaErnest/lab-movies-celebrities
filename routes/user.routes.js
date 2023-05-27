@@ -18,6 +18,14 @@ const username = req.body.username;
 const email = req.body.email;
 const password = req.body.password;
 
+// Password vaidation
+const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
+if (!regex.test(password)) {
+  req.flash('error', 'Password must contain lowercase, capital, numerals, and special characters');
+  res.redirect('/signup');
+  return;
+}
+
 // make sure users fill all mandatory fields:
 // if (!username || !email || !password) {
 //   res.render('user/signup', {errorMessage: "All fields are mandatory. Please provide your username, email and password."
@@ -82,6 +90,35 @@ router.get('/userProfile', isLoggedIn, (req, res, next) => {
   .then((theUser) => {
     res.render('user/user-profile', {theUser: theUser})
   })
+});
+
+// Admin option GET route
+router.get('/all-users', (req, res, next) => {
+  if (!(req.session.currentUser && req.session.currentUser.admin)) {
+    res.redirect('/');
+    return;
+  }
+  User.find()
+  .then((allUsers) => {
+    res.render('user/all-users', {users: allUsers});
+  })
+  .catch((err) => next(err));
+});
+
+// Admin can delete other users POST route
+router.post('/delete-user', (req, res, next) => {
+  if (!(req.session.currentUser && req.session.currentUser.admin)) {
+    res.redirect('/');
+    return
+  };
+
+   // when we deleted pokemon we put the ID in the params but this time were putting in the req.body using a hidden input (coming from name of hbs)
+User.findByIdAndRemove(req.body.theUserID)
+.then(() => {
+  req.flash('success', 'The User Deleted')
+  res.redirect('/all-users');
+})
+.catch((err) => next(err));
 })
 
 // POST route - logout
