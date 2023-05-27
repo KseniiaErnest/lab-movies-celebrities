@@ -12,15 +12,22 @@
 
   <body>
     <nav>
+      
       {{#if theUserObject}}
       <h1>Hey, {{theUserObject.username}}</h1>
       {{/if}}
 
       <a href="/">Home</a>
+      {{#if theUserObject}}
       <a href="/celebrities/create">Add Celebrity</a>
+      {{/if}}
       <a href="/celebrities/all-celebrities">All Celebrities</a>
+
       <a href="/movies/all-movies">All Movies</a>
-      <a href="/movies/create">Add Movie</a>
+          {{#if theUserObject}}
+       <a href="/movies/create">Add Movie</a>
+      {{/if}}
+     
       <a href="/signup">Sign Up</a>
 
       {{#if theUserObject}}
@@ -30,6 +37,18 @@
       {{/if}}
 
     </nav>
+
+{{#if errorMessage}}
+         <div style="background-color:#d13838">
+            {{errorMessage}}
+         </div>
+      {{/if}}
+
+      {{#if successMessage}}
+         <div style="background-color:#42f557">
+            {{successMessage}}
+         </div>
+      {{/if}}
 
     <div class="container">
       {{{body}}}

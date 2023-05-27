@@ -1,9 +1,10 @@
 const router = require("express").Router();
 const Celebrity = require("../models/Celebrity.model");
+const isLoggedIn = require('../middleware/isLoggedIn');
 
 
 // Adding New Celebrity -------*****-------*****-------*****-------*****-------*****-------*****
-router.get('/create', (req, res) => {
+router.get('/create', isLoggedIn, (req, res) => {
   res.render('celebrities/new-celebrity')
 });
 
@@ -14,6 +15,7 @@ router.post('/create', (req, res) => {
   catchPhrase: req.body.theCatchphrase
   })
   .then((response) => {
+    req.flash('success', 'Celebrity Successfully Created');
     res.redirect('/celebrities/all-celebrities');
   })
   .catch((err) => {

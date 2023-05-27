@@ -29,6 +29,9 @@ app.locals.title = `${capitalized(projectName)}- Generated with Ironlauncher`;
 
 app.use((req, res, next)=>{
   res.locals.theUserObject = req.session.currentUser || null;
+  // To make an error globaly avaible
+  res.locals.errorMessage = req.flash('error');
+  res.locals.successMessage = req.flash("success");
   next();
 })
 // 👇 Start handling routes here

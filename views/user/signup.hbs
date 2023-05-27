@@ -4,14 +4,25 @@
 
 <div>
   Username:
-  <input type="text" name="username">
+  <input type="text" name="username" placeholder="MrExample">
+</div>
+
+<div>
+  Email:
+  <input type="email" name="email" placeholder="example@gmail.com">
+  {{!-- validation can happen server side and client side --}}
 </div>
 
 <div>
   Password
-  <input type="text" name="password">
+  <input type="password" name="password" placeholder="examplesomthing">
 </div>
 
 <button>Submit</button>
+
+{{!-- Error message --}}
+{{!-- {{#if errorMessage}}
+<p>{{errorMessage}}</p>
+{{/if}} --}}
 
 </form>

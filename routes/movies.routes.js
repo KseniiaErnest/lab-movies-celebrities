@@ -1,9 +1,11 @@
 const router = require("express").Router();
 const Celebrity = require("../models/Celebrity.model");
 const Movie = require('../models/Movie.model');
+const isLoggedIn = require('../middleware/isLoggedIn');
+const User = require('../models/User.model')
 
 // All movies page -----------------------**********************-------------------------*************************-
-router.get('/all-movies', (req, res) => {
+router.get('/all-movies', (req, res, next) => {
   Movie.find()
   .then((allMovies) => {
     res.render('movies/movies', {movies: allMovies});
@@ -15,7 +17,7 @@ router.get('/all-movies', (req, res) => {
 })
 
 //// Adding New Movie -------*****-------*****-------*****-------*****-------*****-------*****
-router.get('/create', (req, res) => {
+router.get('/create', isLoggedIn, (req, res, next) => {
   Celebrity.find()
   .then((allCelebrities) => {
     res.render('movies/new-movie', {celebrities: allCelebrities})
@@ -26,7 +28,7 @@ router.get('/create', (req, res) => {
 
 });
 
-router.post('/create', (req, res) => {
+router.post('/create', (req, res, next) => {
   Movie.create({
     title: req.body.theTitle,
     genre: req.body.theGenre,
@@ -34,7 +36,8 @@ router.post('/create', (req, res) => {
     cast: req.body.theCelebrity
   })
   .then((response) => {
-    res.redirect('/movies/all-movies')
+    req.flash('success', 'Movie Successfully Created');
+    res.redirect('/movies/all-movies');
   })
   .catch((err) => {
     console.log(err);
@@ -44,7 +47,7 @@ router.post('/create', (req, res) => {
 
 // The Movie Details Page----------********************---------------------*********------
 
-router.get('/:id', (req, res) => {
+router.get('/:id', (req, res, next) => {
   const ID = req.params.id;
   Movie.findById(ID).populate('cast')
   .then((movieDetails) => {
@@ -57,10 +60,11 @@ router.get('/:id', (req, res) => {
 
 // Deleting Movies -------******------******-------***********-------------********-----
 
-router.post('/:theID/delete', (req, res) => {
+router.post('/:theID/delete', (req, res, next) => {
   Movie.findByIdAndRemove(req.params.theID)
   .then(() => {
-    res.redirect('/movies/all-movies')
+    req.flash('success', 'Movie Successfully Deleted');
+    res.redirect('/movies/all-movies');
   })
   .catch((err) => {
     console.log(err);
@@ -68,7 +72,7 @@ router.post('/:theID/delete', (req, res) => {
 })
 
 // Editing Movies -----------**************---------------**********---------*******
-router.get('/:id/edit', (req, res) => {
+router.get('/:id/edit', (req, res, next) => {
   Movie.findById(req.params.id)
   .then((theMovie) => {
     Celebrity.find().then((allCelebrities) => {
@@ -87,7 +91,7 @@ router.get('/:id/edit', (req, res) => {
  
 });
 
-router.post('/:theID/update', (req, res) => {
+router.post('/:theID/update', (req, res, next) => {
   Movie.findByIdAndUpdate(req.params.theID, {
   title: req.body.theTitle,
   genre: req.body.theGenre,
@@ -95,8 +99,29 @@ router.post('/:theID/update', (req, res) => {
   cast: req.body.theCelebrity
   })
   .then(() => {
-    res.redirect('/movies/'+req.params.theID)
+    req.flash('success', 'Movie Successfully Updated');
+    res.redirect('/movies/'+req.params.theID);
   })
+});
+
+// Adding movie to user POST route
+
+router.post('/add/:id', isLoggedIn,  (req, res, next) => {
+  const movieID = req.params.id;
+
+  Movie.findById(movieID)
+  .then((theMovie) => {
+    const userID = req.session.currentUser._id;
+    User.findByIdAndUpdate(userID, {
+      $push: {movie: theMovie}
+})
+.then(() => {
+  req.flash('success', 'Movie Successfully Added')
+  res.redirect('/movies/all-movies')
+})
+.catch((err) => next(err));
+  }).catch((err) => next(err));
+
 })
 
 

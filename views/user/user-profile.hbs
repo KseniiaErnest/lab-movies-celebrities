@@ -1,5 +1,19 @@
-{{#if userInSession}}
+{{!-- {{#if userInSession}}
 <h2>Welcome, {{ userInSession.username }}!</h2>
 {{else}}
 <p>Not logged in!</p>
-{{/if}}
+{{/if}} --}}
+
+<h1>User Profile</h1>
+<div>Welcome, {{theUser.username}}</div>
+
+<h3>Movie</h3>
+
+{{#each theUser.movie}}
+<div>
+<a href="/movies/{{this._id}}">
+  {{this.title}}
+</a>
+</div>
+
+{{/each}}

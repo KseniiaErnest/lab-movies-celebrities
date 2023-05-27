@@ -15,6 +15,15 @@
 {{/each}}
 
 <br><br><br>
+
+{{#if theUserObject}}
+<form action="/movies/add/{{movieDetails._id}}" method="POST">
+  <button>Add This Movie</button>
+</form>
+{{/if}}
+
+<br>
+
 <a href="/movies/{{movieDetails._id}}/edit">Edit this Movie</a>
 <br><br><br>
 
